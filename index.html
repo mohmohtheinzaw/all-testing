@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do-List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<style>
+    *{
+        box-sizing: border-box;
+        font-family: 'PT Sans', sans-serif;
+        
+    }
+    body{
+        background-color: gray;
+    }
+    .to-do{
+        background: #000000aa;
+        width: 300px;
+        margin: 20px auto;
+        border-radius: 20px;
+    }
+    h4{
+        text-align:center ;
+        text-transform: uppercase;
+        color: chocolate;
+    }
+    .input{
+        display: flex;
+        margin-top: 0px;
+        margin-left: 20px;
+        padding: 20px;
+    }
+    .input:focus{
+        outline:none;
+    }
+    #addBtn{
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: coral;
+        cursor: pointer;
+    }
+    #inputText{
+        border-radius:10px;
+        background: coral;
+        border-color:coral;
+    }
+    .list{
+         
+         background-color:00000050;
+         border-radius: 20px;
+         padding: 10px;
+         margin:0;
+     }
+    .list-item{
+            list-style-type: none;
+            margin: 3px;
+            padding: 10px;
+            color: rgb(219, 207, 207);
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 10px;
+        }
+        .list-btn-group{
+            display: flex;
+            
+        }
+        .btn-del{
+            border:1px solid rgb(56, 54, 54);
+            color: red ;
+            background-color: 00000050;
+
+        }
+    .btn-edit{
+            border:1px solid rgb(56, 54, 54);
+            color:green;
+            background-color: 00000050;
+          
+        }
+    .list-item:hover{
+            background-color: rgb(82, 69, 69);
+        }
+    span{
+        display: inline-block;
+        width:200px;
+    }
+    @media screen and (max-width: 500px){
+
+.main{
+    width: 80%;
+}
+
+}
+</style>
+</head>
+
+<body>
+    <div class="to-do mt-4">
+        <br>
+        <h4>To Do List</h4>
+        <div class="todo">
+            <div class="input">
+                <input type="text" id="inputText" active=""  placeholder="Have a nice day!">
+                <button id="addBtn" class="btn btn-add m-1" onclick="addList()">&#10011;</button>
+            </div>
+            <ul class="list" id="list">
+    
+    
+            </ul>
+        </div>
+    </div>
+    <script>
+        let i = 1;
+        let minTextLength = 4;
+        let input = document.getElementById("inputText");
+        let list = document.getElementById("list");
+        let date = new Date();
+        let currentTime = date.getHours()+":"+date.getMinutes();
+         function textFilter(x){
+            if(x){
+                if(x.length>=minTextLength){
+                    return x;
+                }else{
+                    alert("minimum text length is 4");
+                    return false;
+                }
+            }else{
+                alert("Input Text Empty");
+                return false;
+            }
+        }
+        function showList(text){
+        list.innerHTML += `
+          <li class="list-item" id="list${i}"> 
+            <span id="listText${i}">
+                ${text}
+                <br>
+                ${currentTime}
+            </span>
+            <div class="list-btn-group">
+                <button class="btn-del" onclick="deleteList(${i})"><i class="far fa-trash-alt fa-1x"></i></button>
+                <button class="btn-edit" onclick="editList(${i})"><i class="fas fa-edit fa-1x"></i></button>
+            </div>
+         
+          </li>
+          `;
+          i++;
+       }
+        function deleteList(listId){
+            let current = document.getElementById(`list${listId}`);
+            let currentText = document.getElementById(`listText${listId}`).innerHTML;
+            let confirmDelete = confirm(`Are you sure to delete ${currentText}`);
+            
+           if(confirmDelete){
+            
+            list.removeChild(current);
+           }else{
+               alert("cancel delete");
+           }
+        }
+        function addList(){
+            //get
+            let inputText = textFilter(input.value);
+            if(inputText){
+                //set
+                showList(inputText);
+                input.value="";
+                 
+            }
+           };
+           function editList(listId){
+               let current=document.getElementById(`listText${listId}`);
+               let newText=prompt("Edit your plan",current.innerHTML);
+               if(textFilter(newText)){
+                document.getElementById(`listText${listId}`).innerHTML=newText;
+               };
+              
+            }
+    </script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+</body>
+</html>
